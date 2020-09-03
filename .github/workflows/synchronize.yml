@@ -1,0 +1,27 @@
+name: Synchronize
+on: push
+
+jobs:
+  synchronize:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      
+      - name: Synchronize 'master' with upstream
+        run: .github/workflows/Synchronize.sh --debug --upstream cocotb/cocotb --branch master
+      
+      - name: Synchronize 'wishbone' with upstream
+        if: always()
+        run: .github/workflows/Synchronize.sh --debug --upstream cocotb/cocotb --branch wishbone
+      
+      - name: Synchronize 'interfaces' with upstream
+        if: always()
+        run: .github/workflows/Synchronize.sh --debug --upstream cocotb/cocotb --branch interfaces
+      
+      - name: Synchronize 'gh-pages' with upstream
+        if: always()
+        run: .github/workflows/Synchronize.sh --debug --upstream cocotb/cocotb --branch gh-pages
